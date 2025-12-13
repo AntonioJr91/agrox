@@ -16,7 +16,7 @@ public class Employee {
    private LocalDate admissionDate;
    private LocalDate dismissalDate;
 
-   public Employee() {
+   protected Employee() {
    }
 
    public Employee(String name, String cpf, String phoneNumber, LocalDate dateOfBirth,
@@ -45,6 +45,7 @@ public class Employee {
    }
 
    public void setPhoneNumber(String phoneNumber) {
+      validatePhoneNumber(phoneNumber);
       this.phoneNumber = phoneNumber;
    }
 
@@ -57,6 +58,7 @@ public class Employee {
    }
 
    public void setContractType(ContractType contractType) {
+      validateContractType(contractType);
       this.contractType = contractType;
    }
 
