@@ -4,6 +4,8 @@ import afsj.agrox.enums.ServiceOrderStatus;
 import afsj.agrox.validations.DomainValidation;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceOrder {
    private Long id;
@@ -12,6 +14,8 @@ public class ServiceOrder {
    private LocalDate createdAt;
    private LocalDate finishedAt;
    private ServiceOrderStatus status;
+
+   private List<ServiceOrderItem> serviceOrderItems = new ArrayList<>();
 
    protected ServiceOrder() {
    }
@@ -45,30 +49,43 @@ public class ServiceOrder {
       return finishedAt;
    }
 
-public void finish(){
+   public void finish() {
       DomainValidation.when(this.status != ServiceOrderStatus.PENDING, "Only pending service orders can be finished");
       this.finishedAt = LocalDate.now();
       this.status = ServiceOrderStatus.COMPLETED;
-}
-public void cancel(){
-      DomainValidation.when(this.status != ServiceOrderStatus.PENDING, "Only pending service orders can be finished");
+   }
+
+   public void cancel() {
+      DomainValidation.when(this.status != ServiceOrderStatus.PENDING, "Only pending service orders can be cancelled");
       this.finishedAt = LocalDate.now();
       this.status = ServiceOrderStatus.CANCELLED;
-}
+   }
 
    public ServiceOrderStatus getStatus() {
       return status;
    }
 
-   public void setStatus(ServiceOrderStatus status) {
-      validateServiceOrderStatus(status);
-      this.status = status;
+   public List<ServiceOrderItem> getServiceOrderItems() {
+      return List.copyOf(serviceOrderItems);
    }
+
+   public void addItem(Product product, int quantity) {
+      DomainValidation.when(!isPending(), "Cannot add items to a finalized service order");
+      validateProductDuplicate(product);
+      ServiceOrderItem item = new ServiceOrderItem(this, product, quantity);
+      this.serviceOrderItems.add(item);
+   }
+
+   public void removeItem(ServiceOrderItem item) {
+      DomainValidation.when(!isPending(), "Cannot remove items from a finalized service order");
+      this.serviceOrderItems.remove(item);
+   }
+
 
    @Override
    public boolean equals(Object o) {
       if (!(o instanceof ServiceOrder that)) return false;
-      return id !=null && id.equals(that.id);
+      return id != null && id.equals(that.id);
    }
 
    @Override
@@ -90,24 +107,26 @@ public void cancel(){
 
    private void validateDescription(String description) {
       DomainValidation.when(description == null, "Description is required");
-      DomainValidation.when(description.length() < 3 || description.length() > 255, "Description must contain between 50 and 255 characters");
+      DomainValidation.when(description.length() < 3 || description.length() > 255, "Description must contain between 3 and 255 characters");
    }
 
    private void validateEmployee(Employee employee) {
       DomainValidation.when(employee == null, "Employee is required");
    }
 
-   private void validateFinishedAt(LocalDate finishedAt) {
-      DomainValidation.when(finishedAt == null, "Finished date is required");
-      DomainValidation.when(finishedAt.isBefore(this.createdAt), "Finished date cannot be before the creation date");
-   }
-
-   private void validateServiceOrderStatus(ServiceOrderStatus status) {
-      DomainValidation.when(status == null, "Service order status is required");
-   }
-
    private void validation(String description, Employee employee) {
       validateDescription(description);
       validateEmployee(employee);
+   }
+
+   private void validateProductDuplicate(Product product){
+      DomainValidation.when(product == null, "Product is required");
+
+      var exists = serviceOrderItems.stream().anyMatch(i -> i.getProduct().equals(product));
+      DomainValidation.when(exists, "Product already added to service order");
+   }
+
+   public boolean isPending() {
+      return status == ServiceOrderStatus.PENDING;
    }
 }
