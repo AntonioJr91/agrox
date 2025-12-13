@@ -21,6 +21,7 @@ public class Employee {
 
    public Employee(String name, String cpf, String phoneNumber, LocalDate dateOfBirth,
                    ContractType contractType, LocalDate admissionDate) {
+      validation(name, cpf, phoneNumber, dateOfBirth, contractType, admissionDate);
       this.name = name;
       this.cpf = cpf;
       this.phoneNumber = phoneNumber;
