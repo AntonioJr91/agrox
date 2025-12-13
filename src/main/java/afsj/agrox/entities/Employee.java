@@ -84,20 +84,15 @@ public class Employee {
       this.dismissalDate = today;
    }
 
-   private boolean isDismissed() {
-      return this.dismissalDate != null;
-   }
-
    @Override
    public boolean equals(Object o) {
-      if (o == null || getClass() != o.getClass()) return false;
-      Employee employee = (Employee) o;
-      return Objects.equals(cpf, employee.cpf);
+      if (!(o instanceof Employee employee)) return false;
+      return cpf != null && cpf.equals(employee.cpf);
    }
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(cpf);
+      return 31;
    }
 
    @Override
@@ -111,6 +106,10 @@ public class Employee {
               ", admissionDate=" + admissionDate +
               ", dismissalDate=" + dismissalDate +
               '}';
+   }
+
+   public boolean isDismissed() {
+      return this.dismissalDate != null;
    }
 
    private void validation(String name, String cpf, String phoneNumber,
