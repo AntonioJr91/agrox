@@ -2,6 +2,7 @@ package afsj.agrox.entities;
 
 
 import afsj.agrox.enums.ContractType;
+import afsj.agrox.validations.DomainValidation;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,14 +20,14 @@ public class Employee {
    }
 
    public Employee(String name, String cpf, String phoneNumber, LocalDate dateOfBirth,
-                   ContractType contractType, LocalDate admissionDate, LocalDate dismissalDate) {
+                   ContractType contractType, LocalDate admissionDate) {
       this.name = name;
       this.cpf = cpf;
       this.phoneNumber = phoneNumber;
       this.dateOfBirth = dateOfBirth;
       this.contractType = contractType;
       this.admissionDate = admissionDate;
-      this.dismissalDate = dismissalDate;
+      this.dismissalDate = null;
    }
 
 
@@ -66,8 +67,22 @@ public class Employee {
       return dismissalDate;
    }
 
-   public void setDismissalDate(LocalDate dismissalDate) {
-      this.dismissalDate = dismissalDate;
+   public void dismiss() {
+      if (isDismissed()) {
+         throw new IllegalStateException("Employee has already been dismissed");
+      }
+
+      LocalDate today = LocalDate.now();
+
+      if (today.isBefore(this.admissionDate)) {
+         throw new IllegalStateException("Dismissal date before admission date");
+      }
+
+      this.dismissalDate = today;
+   }
+
+   private boolean isDismissed() {
+      return this.dismissalDate != null;
    }
 
    @Override
@@ -93,5 +108,47 @@ public class Employee {
               ", admissionDate=" + admissionDate +
               ", dismissalDate=" + dismissalDate +
               '}';
+   }
+
+   private void validation(String name, String cpf, String phoneNumber,
+                           LocalDate dateOfBirth, ContractType contractType,
+                           LocalDate admissionDate) {
+
+      validateName(name);
+      validateCpf(cpf);
+      validatePhoneNumber(phoneNumber);
+      validateDateOfBirth(dateOfBirth);
+      validateContractType(contractType);
+      validateAdmissionDate(admissionDate);
+   }
+
+   private static void validateName(String name) {
+      DomainValidation.when(name == null, "Name is required");
+      DomainValidation.when(name.isBlank(), "Name must not be blank");
+      DomainValidation.when(name.length() < 3 || name.length() > 50, "Name must contain between 3 and 50 characters");
+   }
+
+   private static void validateCpf(String cpf) {
+      DomainValidation.when(cpf == null, "CPF is required");
+      DomainValidation.when(cpf.length() != 11, "CPF must contain exactly 11 digits");
+   }
+
+   private static void validatePhoneNumber(String phoneNumber) {
+      DomainValidation.when(phoneNumber == null, "Phone number is required");
+      DomainValidation.when(phoneNumber.length() != 11, "Phone number must contain 11 digits (DDD + 9-digit number)");
+   }
+
+   private static void validateDateOfBirth(LocalDate dateOfBirth) {
+      DomainValidation.when(dateOfBirth == null, "Date of birth is required");
+      DomainValidation.when(dateOfBirth.getYear() < 1970, "Date of birth must be from 1970 onwards");
+   }
+
+   private static void validateContractType(ContractType contractType) {
+      DomainValidation.when(contractType == null, "Contract type is required");
+   }
+
+   private static void validateAdmissionDate(LocalDate admissionDate) {
+      DomainValidation.when(admissionDate == null, "Admission date is required");
+      DomainValidation.when(admissionDate.isBefore(LocalDate.now()), "Admission date cannot be before the current date");
    }
 }
