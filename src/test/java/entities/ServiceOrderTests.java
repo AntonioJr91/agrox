@@ -11,6 +11,7 @@ import afsj.agrox.exceptions.DomainException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -20,8 +21,6 @@ public class ServiceOrderTests {
 
    private String description;
    private Employee emp;
-   private LocalDate createdAt;
-   private LocalDate finishedAt;
    private ServiceOrderStatus status;
 
    @BeforeEach
@@ -34,12 +33,9 @@ public class ServiceOrderTests {
               LocalDate.of(1990, 1, 1),
               ContractType.CLT,
               LocalDate.now());
-      createdAt = LocalDate.now();
-      finishedAt = LocalDate.now().plusDays(1);
       status = ServiceOrderStatus.PENDING;
 
       so = new ServiceOrder(description, emp);
-
       p = new Product("Product", UnitOfMeasure.UN, new Category("others"), 50);
    }
 
@@ -84,9 +80,9 @@ public class ServiceOrderTests {
 
    @Test
    void shouldThrowExceptionWhenServiceOrderIsPending() {
+      so.finish();
       Assertions.assertThrows(
-              DomainException.class,
-              () -> so = new ServiceOrder(description, null)
+              DomainException.class, () -> so.cancel()
       );
    }
 
