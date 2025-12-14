@@ -47,7 +47,7 @@ public class Stock {
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    private void validateIncreaseAmount(long amount) {

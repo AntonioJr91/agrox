@@ -49,7 +49,7 @@ public class Product {
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    @Override

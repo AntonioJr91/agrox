@@ -27,11 +27,6 @@ public class Category {
       return name;
    }
 
-   public void setName(String name) {
-      validateName(name);
-      this.name = name;
-   }
-
    public Set<Product> getProducts() {
       return Set.copyOf(products);
    }
@@ -44,7 +39,7 @@ public class Category {
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    @Override

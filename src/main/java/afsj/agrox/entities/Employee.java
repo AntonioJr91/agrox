@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Employee {
+   private Long id;
    private String name;
    private String cpf;
    private String phoneNumber;
@@ -31,6 +32,9 @@ public class Employee {
       this.dismissalDate = null;
    }
 
+   public Long getId() {
+      return id;
+   }
 
    public String getName() {
       return name;
@@ -87,12 +91,12 @@ public class Employee {
    @Override
    public boolean equals(Object o) {
       if (!(o instanceof Employee employee)) return false;
-      return cpf != null && cpf.equals(employee.cpf);
+      return id != null && id.equals(employee.id);
    }
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    @Override
@@ -133,6 +137,7 @@ public class Employee {
    private static void validateCpf(String cpf) {
       DomainValidation.when(cpf == null, "CPF is required");
       DomainValidation.when(cpf.length() != 11, "CPF must contain exactly 11 digits");
+      DomainValidation.when(!cpf.matches("\\d{11}"), "CPF must contain only digits");
    }
 
    private static void validatePhoneNumber(String phoneNumber) {
@@ -151,6 +156,6 @@ public class Employee {
 
    private static void validateAdmissionDate(LocalDate admissionDate) {
       DomainValidation.when(admissionDate == null, "Admission date is required");
-      DomainValidation.when(admissionDate.isBefore(LocalDate.now()), "Admission date cannot be before the current date");
+      DomainValidation.when(admissionDate.isAfter(LocalDate.now()), "Admission date cannot be in the future");
    }
 }

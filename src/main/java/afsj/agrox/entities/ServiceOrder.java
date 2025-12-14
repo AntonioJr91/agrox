@@ -90,7 +90,7 @@ public class ServiceOrder {
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    @Override

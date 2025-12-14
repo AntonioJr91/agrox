@@ -54,7 +54,7 @@ public class ServiceOrderItem {
 
    @Override
    public int hashCode() {
-      return 31;
+      return getClass().hashCode();
    }
 
    private void validateProduct(Product product) {
