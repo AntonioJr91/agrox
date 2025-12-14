@@ -28,6 +28,12 @@ public class CategoryTests {
               DomainException.class, () -> new Category(null)
       );
    }
+   @Test
+   void shouldThrowExceptionWhenNameIsBlank() {
+      Assertions.assertThrows(
+              DomainException.class, () -> new Category(" ")
+      );
+   }
 
    @Test
    void shouldThrowExceptionWhenNameHasLessThan3Characters() {
