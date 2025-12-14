@@ -5,7 +5,6 @@ import afsj.agrox.enums.ContractType;
 import afsj.agrox.validations.DomainValidation;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Employee {
    private Long id;
@@ -74,18 +73,10 @@ public class Employee {
       return dismissalDate;
    }
 
-   public void dismiss() {
-      if (isDismissed()) {
-         throw new IllegalStateException("Employee has already been dismissed");
-      }
-
-      LocalDate today = LocalDate.now();
-
-      if (today.isBefore(this.admissionDate)) {
-         throw new IllegalStateException("Dismissal date before admission date");
-      }
-
-      this.dismissalDate = today;
+   public void dismiss(LocalDate dismissalDate) {
+      validateIsDismissed();
+      validateDismissalDate(dismissalDate);
+      this.dismissalDate = dismissalDate;
    }
 
    @Override
@@ -128,34 +119,45 @@ public class Employee {
       validateAdmissionDate(admissionDate);
    }
 
-   private static void validateName(String name) {
+   private void validateName(String name) {
       DomainValidation.when(name == null, "Name is required");
       DomainValidation.when(name.isBlank(), "Name must not be blank");
       DomainValidation.when(name.length() < 3 || name.length() > 50, "Name must contain between 3 and 50 characters");
    }
 
-   private static void validateCpf(String cpf) {
+   private void validateCpf(String cpf) {
       DomainValidation.when(cpf == null, "CPF is required");
       DomainValidation.when(cpf.length() != 11, "CPF must contain exactly 11 digits");
       DomainValidation.when(!cpf.matches("\\d{11}"), "CPF must contain only digits");
    }
 
-   private static void validatePhoneNumber(String phoneNumber) {
+   private void validatePhoneNumber(String phoneNumber) {
       DomainValidation.when(phoneNumber == null, "Phone number is required");
       DomainValidation.when(phoneNumber.length() != 11, "Phone number must contain 11 digits (DDD + 9-digit number)");
    }
 
-   private static void validateDateOfBirth(LocalDate dateOfBirth) {
+   private void validateDateOfBirth(LocalDate dateOfBirth) {
       DomainValidation.when(dateOfBirth == null, "Date of birth is required");
       DomainValidation.when(dateOfBirth.getYear() < 1970, "Date of birth must be from 1970 onwards");
+      DomainValidation.when(dateOfBirth.isAfter(LocalDate.now()), "Date of birth cannot be in the future");
    }
 
-   private static void validateContractType(ContractType contractType) {
+   private void validateContractType(ContractType contractType) {
       DomainValidation.when(contractType == null, "Contract type is required");
    }
 
-   private static void validateAdmissionDate(LocalDate admissionDate) {
+   private void validateAdmissionDate(LocalDate admissionDate) {
       DomainValidation.when(admissionDate == null, "Admission date is required");
-      DomainValidation.when(admissionDate.isAfter(LocalDate.now()), "Admission date cannot be in the future");
+      DomainValidation.when(!admissionDate.equals(LocalDate.now()), "Admission date must be today");
+   }
+
+   private void validateDismissalDate(LocalDate dismissalDate) {
+      DomainValidation.when(dismissalDate == null, "Dismissal date is required");
+      DomainValidation.when(dismissalDate.isBefore(admissionDate), "Dismissal date cannot be before admission date");
+      DomainValidation.when(dismissalDate.isAfter(LocalDate.now()), "Dismissal date cannot be in the future");
+   }
+
+   private void validateIsDismissed() {
+      DomainValidation.when(isDismissed(), "Employee is already dismissed");
    }
 }

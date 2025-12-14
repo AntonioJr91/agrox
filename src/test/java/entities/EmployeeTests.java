@@ -39,18 +39,17 @@ public class EmployeeTests {
    }
 
    @Test
-   void employeeShouldCreateWhenValid() {
+   void shouldCreateWhenValid() {
       Assertions.assertEquals(validName, emp.getName());
       Assertions.assertEquals(validCpf, emp.getCpf());
       Assertions.assertEquals(validPhone, emp.getPhoneNumber());
       Assertions.assertEquals(validBirthDate, emp.getDateOfBirth());
       Assertions.assertEquals(validContractType, emp.getContractType());
       Assertions.assertEquals(validAdmissionDate, emp.getAdmissionDate());
-      Assertions.assertNull(emp.getDismissalDate());
    }
 
    @Test
-   void shouldNotCreateEmployeeWithNullName() {
+   void shouldThrowExceptionWhenCreateEmployeeWithNullName() {
       Assertions.assertThrows(
               DomainException.class,
               () -> new Employee(
@@ -65,7 +64,7 @@ public class EmployeeTests {
    }
 
    @Test
-   void shouldNotCreateEmployeeWithInvalidCpfLength() {
+   void shouldThrowExceptionWhenCreateEmployeeWithInvalidCpfLength() {
       Assertions.assertThrows(
               DomainException.class,
               () -> new Employee(
@@ -95,7 +94,7 @@ public class EmployeeTests {
    }
 
    @Test
-   void shouldNotCreateEmployeeWithInvalidDateOfBirth() {
+   void shouldThrowExceptionWhenCreateEmployeeWithInvalidDateOfBirth() {
       Assertions.assertThrows(
               DomainException.class,
               () -> new Employee(
@@ -110,7 +109,7 @@ public class EmployeeTests {
    }
 
    @Test
-   void shouldNotCreateEmployeeWithNullContractType() {
+   void shouldThrowExceptionWhenCreateEmployeeWithNullContractType() {
       Assertions.assertThrows(
               DomainException.class,
               () -> new Employee(
@@ -125,7 +124,7 @@ public class EmployeeTests {
    }
 
    @Test
-   void shouldNotCreateEmployeeWithAdmissionDateBeforeToday() {
+   void shouldThrowExceptionWhenCreateEmployeeWithAdmissionDateInPast() {
       Assertions.assertThrows(
               DomainException.class,
               () -> new Employee(
@@ -140,36 +139,61 @@ public class EmployeeTests {
    }
 
    @Test
+   void shouldThrowExceptionWhenCreateEmployeeWithAdmissionDateInFuture() {
+      Assertions.assertThrows(
+              DomainException.class,
+              () -> new Employee(
+                      validName,
+                      validCpf,
+                      validPhone,
+                      validBirthDate,
+                      validContractType,
+                      LocalDate.now().plusDays(1)
+              )
+      );
+   }
+
+   @Test
    void shouldDismissEmployeeWithTodayDate() {
-      emp.dismiss();
+      emp.dismiss(LocalDate.now());
 
       Assertions.assertNotNull(emp.getDismissalDate());
       Assertions.assertEquals(LocalDate.now(), emp.getDismissalDate());
    }
 
    @Test
-   void shouldNotAllowDismissTwice() {
-      emp.dismiss();
+   void shouldThrowExceptionWhenAllowDismissTwice() {
+      emp.dismiss(LocalDate.now());
 
       Assertions.assertThrows(
-              IllegalStateException.class, () -> emp.dismiss()
+              DomainException.class, () -> emp.dismiss(LocalDate.now())
       );
    }
 
    @Test
-   void shouldNotAllowDismissBeforeAdmissionDate() {
-      Employee futureEmployee = new Employee(
+   void shouldThrowExceptionWhenAllowDismissBeforeAdmissionDate() {
+      Employee employee = new Employee(
               "Ana",
               "12345678910",
               "73123456789",
               LocalDate.of(1990, 1, 1),
               ContractType.CLT,
-              LocalDate.now().plusDays(1)
+              LocalDate.now()
       );
 
+      LocalDate dateBeforeAdmission = employee.getAdmissionDate().minusDays(1);
+
       Assertions.assertThrows(
-              IllegalStateException.class,
-              futureEmployee::dismiss
+              DomainException.class,
+              () -> employee.dismiss(dateBeforeAdmission)
+      );
+   }
+
+   @Test
+   void shouldThrowExceptionWhenDismissInFuture() {
+      Assertions.assertThrows(
+              DomainException.class,
+              () -> emp.dismiss(LocalDate.now().plusDays(1))
       );
    }
 }
