@@ -10,14 +10,17 @@ public class Product {
 
    private Category category;
 
+   private Stock stock;
+
    protected Product() {
    }
 
-   public Product(String name, UnitOfMeasure unitOfMeasure, Category category) {
-      validate(name, unitOfMeasure, category);
+   public Product(String name, UnitOfMeasure unitOfMeasure, Category category, int initialStockQuantity) {
+      validate(name, unitOfMeasure, category, initialStockQuantity);
       this.name = name;
       this.unitOfMeasure = unitOfMeasure;
       this.category = category;
+      this.stock = new Stock(this, initialStockQuantity);
    }
 
    public Long getId() {
@@ -39,6 +42,21 @@ public class Product {
 
    public Category getCategory() {
       return category;
+   }
+
+   public int getStockQuantity() {
+      return stock.getQuantity();
+   }
+
+   public boolean isLowStock() {
+      return stock.isLowStock();
+   }
+
+   public void increaseStock(int amount) {
+      stock.increase(amount);
+   }
+   public void decreaseStock(int amount) {
+      stock.decrease(amount);
    }
 
    @Override
@@ -77,9 +95,14 @@ public class Product {
       DomainValidation.when(category == null, "Category is required");
    }
 
-   private void validate(String name, UnitOfMeasure unitOfMeasure, Category category) {
+   private void validateInitialQuantity(int initialStockQuantity) {
+      DomainValidation.when(initialStockQuantity <= 0, "Initial stock must be greater than zero");
+   }
+
+   private void validate(String name, UnitOfMeasure unitOfMeasure, Category category, int initialStockQuantity) {
       validateName(name);
       validateUnitOfMeasure(unitOfMeasure);
       validateCategory(category);
+      validateInitialQuantity(initialStockQuantity);
    }
 }
