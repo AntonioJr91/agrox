@@ -61,6 +61,5 @@ public class Stock {
 
    private void validate(Product product, int quantity) {
       DomainValidation.when(product == null, "Product is required");
-      DomainValidation.when(quantity < 0, "Initial stock quantity cannot be negative");
    }
 }
