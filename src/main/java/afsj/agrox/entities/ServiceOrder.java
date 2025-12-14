@@ -1,6 +1,7 @@
 package afsj.agrox.entities;
 
 import afsj.agrox.enums.ServiceOrderStatus;
+import afsj.agrox.exceptions.DomainException;
 import afsj.agrox.validations.DomainValidation;
 
 import java.time.LocalDate;
@@ -76,11 +77,33 @@ public class ServiceOrder {
       this.serviceOrderItems.add(item);
    }
 
-   public void removeItem(ServiceOrderItem item) {
+   public void removeItem(Product product) {
       DomainValidation.when(!isPending(), "Cannot remove items from a finalized service order");
-      this.serviceOrderItems.remove(item);
+      ServiceOrderItem item = findItemByProduct(product);
+      serviceOrderItems.remove(item);
    }
 
+   public void increaseItemQuantity(Product product, int amount) {
+      DomainValidation.when(!isPending(), "Cannot change items of a finalized order");
+
+      ServiceOrderItem item = findItemByProduct(product);
+      item.increaseQuantity(amount);
+   }
+
+   public void decreaseItemQuantity(Product product, int amount) {
+      DomainValidation.when(!isPending(), "Cannot change items of a finalized order");
+
+      ServiceOrderItem item = findItemByProduct(product);
+      item.decreaseQuantity(amount);
+   }
+
+   private ServiceOrderItem findItemByProduct(Product product) {
+      validateProductIsNull(product);
+      return serviceOrderItems.stream()
+              .filter(i -> i.getProduct().equals(product))
+              .findFirst()
+              .orElseThrow(() -> new DomainException("Product not found in service order"));
+   }
 
    @Override
    public boolean equals(Object o) {
@@ -119,8 +142,12 @@ public class ServiceOrder {
       validateEmployee(employee);
    }
 
-   private void validateProductDuplicate(Product product){
+   private void validateProductIsNull(Product product) {
       DomainValidation.when(product == null, "Product is required");
+   }
+
+   private void validateProductDuplicate(Product product) {
+      validateProductIsNull(product);
 
       var exists = serviceOrderItems.stream().anyMatch(i -> i.getProduct().equals(product));
       DomainValidation.when(exists, "Product already added to service order");

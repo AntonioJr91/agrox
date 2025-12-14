@@ -22,10 +22,6 @@ public class ServiceOrderItem {
       return id;
    }
 
-   public ServiceOrder getServiceOrder() {
-      return serviceOrder;
-   }
-
    public Product getProduct() {
       return product;
    }
@@ -34,15 +30,13 @@ public class ServiceOrderItem {
       return quantity;
    }
 
-   public void increaseQuantity(int amount) {
+   void increaseQuantity(int amount) {
       validateAmount(amount);
-      validateOrderStatus();
       this.quantity += amount;
    }
 
-   public void decreaseQuantity(int amount) {
+   void decreaseQuantity(int amount) {
       validateAmount(amount);
-      validateOrderStatus();
       this.quantity -= amount;
    }
 
@@ -72,10 +66,6 @@ public class ServiceOrderItem {
    private void validateAmount(int amount) {
       DomainValidation.when(amount <= 0, "Amount must be greater than zero");
       DomainValidation.when(this.quantity - amount <= 0, "Resulting quantity must be greater than zero");
-   }
-
-   private void validateOrderStatus() {
-      DomainValidation.when(!serviceOrder.isPending(), "Cannot change items of a finalized service order");
    }
 
    private void validation(ServiceOrder serviceOrder, Product product, int quantity) {
