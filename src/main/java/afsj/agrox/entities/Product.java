@@ -20,6 +20,7 @@ public class Product {
       this.name = name;
       this.unitOfMeasure = unitOfMeasure;
       this.category = category;
+      category.addProduct(this);
       this.stock = new Stock(this, initialStockQuantity);
    }
 

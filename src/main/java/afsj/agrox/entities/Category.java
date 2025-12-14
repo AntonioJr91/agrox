@@ -31,6 +31,10 @@ public class Category {
       return Set.copyOf(products);
    }
 
+   void addProduct(Product product) {
+      products.add(product);
+   }
+
    @Override
    public boolean equals(Object o) {
       if (!(o instanceof Category category)) return false;
