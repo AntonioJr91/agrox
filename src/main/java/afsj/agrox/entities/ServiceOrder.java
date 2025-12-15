@@ -3,19 +3,39 @@ package afsj.agrox.entities;
 import afsj.agrox.enums.ServiceOrderStatus;
 import afsj.agrox.exceptions.DomainException;
 import afsj.agrox.validations.DomainValidation;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class ServiceOrder {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Column(nullable = false, length = 255)
    private String description;
+
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name = "employee_id", nullable = false)
    private Employee employee;
+
+   @Column(nullable = false, updatable = false)
    private LocalDate createdAt;
+
+   @Column(updatable = false)
    private LocalDate finishedAt;
+
+   @Enumerated(EnumType.STRING)
+   @Column(nullable = false)
    private ServiceOrderStatus status;
 
+   @OneToMany(mappedBy = "serviceOrder",
+           cascade = CascadeType.ALL,
+           orphanRemoval = true)
    private List<ServiceOrderItem> serviceOrderItems = new ArrayList<>();
 
    protected ServiceOrder() {

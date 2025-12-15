@@ -1,11 +1,23 @@
 package afsj.agrox.entities;
 
 import afsj.agrox.validations.DomainValidation;
+import jakarta.persistence.*;
 
+@Entity
 public class ServiceOrderItem {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name = "service_order_id", nullable = false)
    private ServiceOrder serviceOrder;
+
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name = "product_id", nullable = false)
    private Product product;
+
+   @Column(nullable = false)
    private int quantity;
 
    protected ServiceOrderItem() {

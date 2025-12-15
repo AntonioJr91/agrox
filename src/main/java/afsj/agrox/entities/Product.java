@@ -2,14 +2,29 @@ package afsj.agrox.entities;
 
 import afsj.agrox.enums.UnitOfMeasure;
 import afsj.agrox.validations.DomainValidation;
+import jakarta.persistence.*;
 
+@Entity
 public class Product {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Column(nullable = false, length = 50)
    private String name;
+
+   @Enumerated(EnumType.STRING)
+   @Column(nullable = false)
    private UnitOfMeasure unitOfMeasure;
 
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "category_id", nullable = false)
    private Category category;
 
+   @Embedded
+   @AttributeOverride(name = "quantity",
+           column = @Column(name = "stock_quantity", nullable = false))
    private Stock stock;
 
    protected Product() {
@@ -20,8 +35,7 @@ public class Product {
       this.name = name;
       this.unitOfMeasure = unitOfMeasure;
       this.category = category;
-      category.addProduct(this);
-      this.stock = new Stock(this, initialStockQuantity);
+      this.stock = new Stock(initialStockQuantity);
    }
 
    public Long getId() {
@@ -56,6 +70,7 @@ public class Product {
    public void increaseStock(int amount) {
       stock.increase(amount);
    }
+
    public void decreaseStock(int amount) {
       stock.decrease(amount);
    }
@@ -78,6 +93,7 @@ public class Product {
               ", name='" + name + '\'' +
               ", unitOfMeasure=" + unitOfMeasure +
               ", category=" + category +
+              ", stock=" + stock.getQuantity() +
               '}';
    }
 

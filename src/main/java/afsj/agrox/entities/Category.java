@@ -1,15 +1,21 @@
 package afsj.agrox.entities;
 
 import afsj.agrox.validations.DomainValidation;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 public class Category {
-   private Long id;
-   private String name;
 
-   private Set<Product> products = new HashSet<>();
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @Column(nullable = false, unique = true, length = 50)
+   private String name;
 
    protected Category() {
    }
@@ -25,14 +31,6 @@ public class Category {
 
    public String getName() {
       return name;
-   }
-
-   public Set<Product> getProducts() {
-      return Set.copyOf(products);
-   }
-
-   void addProduct(Product product) {
-      products.add(product);
    }
 
    @Override
