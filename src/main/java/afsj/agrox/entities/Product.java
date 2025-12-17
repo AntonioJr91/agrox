@@ -46,11 +46,6 @@ public class Product {
       return name;
    }
 
-   public void setName(String name) {
-      validateName(name);
-      this.name = name;
-   }
-
    public UnitOfMeasure getUnitOfMeasure() {
       return unitOfMeasure;
    }
@@ -73,6 +68,15 @@ public class Product {
 
    public void decreaseStock(int amount) {
       stock.decrease(amount);
+   }
+
+   public void updateDetails(String name, UnitOfMeasure unitOfMeasure, Category category) {
+      validateName(name);
+      validateUnitOfMeasure(unitOfMeasure);
+      validateCategory(category);
+      this.name = name;
+      this.unitOfMeasure = unitOfMeasure;
+      this.category = category;
    }
 
    @Override
@@ -121,5 +125,11 @@ public class Product {
       validateUnitOfMeasure(unitOfMeasure);
       validateCategory(category);
       validateInitialQuantity(initialStockQuantity);
+   }
+
+   private void validateUpdate(String name, UnitOfMeasure unitOfMeasure, Category category) {
+      validateName(name);
+      validateUnitOfMeasure(unitOfMeasure);
+      validateCategory(category);
    }
 }
