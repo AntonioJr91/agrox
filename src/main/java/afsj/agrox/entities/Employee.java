@@ -98,6 +98,13 @@ public class Employee {
       this.dismissalDate = dismissalDate;
    }
 
+   public void updateDetails(String phoneNumber, ContractType contractType) {
+      validatePhoneNumber(phoneNumber);
+      validateContractType(contractType);
+      this.phoneNumber = phoneNumber;
+      this.contractType = contractType;
+   }
+
    @Override
    public boolean equals(Object o) {
       if (!(o instanceof Employee employee)) return false;
