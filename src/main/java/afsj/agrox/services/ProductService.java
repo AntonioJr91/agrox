@@ -47,7 +47,7 @@ public class ProductService {
    }
 
    @Transactional
-   public ProductResponseDto updateProduct(Long id, ProductUpdateDto dto) {
+   public ProductResponseDto updateDetails(Long id, ProductUpdateDto dto) {
       Product product = productRepository.findById(id)
               .orElseThrow(() -> new ResourceNotFoundException());
 
@@ -59,6 +59,25 @@ public class ProductService {
               dto.getUnitOfMeasure(),
               category
       );
+      return ProductMapper.toDto(product);
+   }
+
+   @Transactional
+   public ProductResponseDto increaseProductAmount(Long productId, int amount) {
+      Product product = productRepository.findById(productId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      product.increaseStock(amount);
+      return ProductMapper.toDto(product);
+
+   }
+
+   @Transactional
+   public ProductResponseDto decreaseProductAmount(Long productId, int amount) {
+      Product product = productRepository.findById(productId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      product.decreaseStock(amount);
       return ProductMapper.toDto(product);
    }
 

@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public class ProductCreateDto {
 
    @NotBlank
-   @Size(min = 3, max = 5)
+   @Size(min = 3, max = 50)
    private String name;
 
    @NotNull

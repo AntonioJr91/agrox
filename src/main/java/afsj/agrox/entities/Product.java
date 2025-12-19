@@ -126,10 +126,4 @@ public class Product {
       validateCategory(category);
       validateInitialQuantity(initialStockQuantity);
    }
-
-   private void validateUpdate(String name, UnitOfMeasure unitOfMeasure, Category category) {
-      validateName(name);
-      validateUnitOfMeasure(unitOfMeasure);
-      validateCategory(category);
-   }
 }
