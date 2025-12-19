@@ -1,10 +1,17 @@
 package afsj.agrox.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public class ServiceOrderCreateDto {
+   @NotBlank
    private String description;
+
+   @NotNull
    private Long employeeId;
+
    private List<ServiceOrderItemCreateDto> items;
 
    public ServiceOrderCreateDto() {

@@ -1,7 +1,12 @@
 package afsj.agrox.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ServiceOrderItemCreateDto {
+   @NotNull
    private Long productId;
+
+   @NotNull
    private int quantity;
 
    public ServiceOrderItemCreateDto() {
