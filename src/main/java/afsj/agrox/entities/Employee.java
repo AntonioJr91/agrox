@@ -170,6 +170,7 @@ public class Employee {
 
    private void validateContractType(ContractType contractType) {
       DomainValidation.when(contractType == null, "Contract type is required");
+      DomainValidation.when(contractType == null, "Contract type is required");
    }
 
    private void validateAdmissionDate(LocalDate admissionDate) {

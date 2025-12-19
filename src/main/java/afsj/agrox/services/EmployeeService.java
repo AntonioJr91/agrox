@@ -7,11 +7,12 @@ import afsj.agrox.entities.Employee;
 import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.EmployeeMapper;
 import afsj.agrox.repositories.EmployeeRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.module.ResolutionException;
 import java.util.List;
 
+@Service
 public class EmployeeService {
 
    private final EmployeeRepository employeeRepository;
