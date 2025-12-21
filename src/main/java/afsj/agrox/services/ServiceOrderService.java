@@ -88,6 +88,22 @@ public class ServiceOrderService {
       return ServiceOrderMapper.toDto(so);
    }
 
+   @Transactional
+   public ServiceOrderResponseDto finishOrder(Long serviceOrderId) {
+      ServiceOrder so = serviceOrderRepository.findById(serviceOrderId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+      so.finish();
+      return ServiceOrderMapper.toDto(so);
+   }
+
+   @Transactional
+   public ServiceOrderResponseDto cancelOrder(Long serviceOrderId) {
+      ServiceOrder so = serviceOrderRepository.findById(serviceOrderId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      so.cancel();
+      return ServiceOrderMapper.toDto(so);
+   }
 
    @Transactional
    public void deleteServiceOrder(Long id) {

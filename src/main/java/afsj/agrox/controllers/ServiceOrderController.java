@@ -42,7 +42,7 @@ public class ServiceOrderController {
    @PatchMapping("/{orderId}/items/{productId}/increase")
    public ResponseEntity<ServiceOrderResponseDto> increaseItemQuantity(@PathVariable Long orderId,
                                                                        @PathVariable Long productId,
-                                                                       @RequestBody ServiceOrderItemUpdateQuantityDto dto){
+                                                                       @RequestBody @Valid ServiceOrderItemUpdateQuantityDto dto){
 
       ServiceOrderResponseDto response = serviceOrderService.increaseItemQuantity(orderId, productId, dto.getAmount());
       return ResponseEntity.ok().body(response);
@@ -55,6 +55,16 @@ public class ServiceOrderController {
 
       ServiceOrderResponseDto response = serviceOrderService.decreaseItemQuantity(orderId, productId, dto.getAmount());
       return ResponseEntity.ok().body(response);
+   }
+
+   @PatchMapping("/{orderId}/finish")
+   public  ResponseEntity<ServiceOrderResponseDto> finishOrder(@PathVariable Long orderId){
+      return ResponseEntity.ok().body(serviceOrderService.finishOrder(orderId));
+   }
+
+   @PatchMapping("/{orderId}/cancel")
+   public  ResponseEntity<ServiceOrderResponseDto> cancelOrder(@PathVariable Long orderId){
+      return ResponseEntity.ok().body(serviceOrderService.cancelOrder(orderId));
    }
 
    @DeleteMapping(value = "/{id}")
