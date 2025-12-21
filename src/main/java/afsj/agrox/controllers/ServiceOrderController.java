@@ -1,6 +1,7 @@
 package afsj.agrox.controllers;
 
 import afsj.agrox.dtos.ServiceOrderCreateDto;
+import afsj.agrox.dtos.ServiceOrderItemUpdateQuantityDto;
 import afsj.agrox.dtos.ServiceOrderResponseDto;
 import afsj.agrox.services.ServiceOrderService;
 import jakarta.validation.Valid;
@@ -36,6 +37,24 @@ public class ServiceOrderController {
       ServiceOrderResponseDto so = serviceOrderService.createServiceOrder(dto);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(so.getId()).toUri();
       return ResponseEntity.created(uri).body(so);
+   }
+
+   @PatchMapping("/{orderId}/items/{productId}/increase")
+   public ResponseEntity<ServiceOrderResponseDto> increaseItemQuantity(@PathVariable Long orderId,
+                                                                       @PathVariable Long productId,
+                                                                       @RequestBody ServiceOrderItemUpdateQuantityDto dto){
+
+      ServiceOrderResponseDto response = serviceOrderService.increaseItemQuantity(orderId, productId, dto.getAmount());
+      return ResponseEntity.ok().body(response);
+   }
+
+   @PatchMapping("/{orderId}/items/{productId}/decrease")
+   public ResponseEntity<ServiceOrderResponseDto> decreaseItemQuantity(@PathVariable Long orderId,
+                                                                       @PathVariable Long productId,
+                                                                       @RequestBody ServiceOrderItemUpdateQuantityDto dto){
+
+      ServiceOrderResponseDto response = serviceOrderService.decreaseItemQuantity(orderId, productId, dto.getAmount());
+      return ResponseEntity.ok().body(response);
    }
 
    @DeleteMapping(value = "/{id}")

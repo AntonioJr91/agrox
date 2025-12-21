@@ -65,6 +65,31 @@ public class ServiceOrderService {
    }
 
    @Transactional
+   public ServiceOrderResponseDto increaseItemQuantity(Long serviceOrderId, Long productId, int amount) {
+      ServiceOrder so = serviceOrderRepository.findById(serviceOrderId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      Product product = productRepository.findById(productId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      so.increaseItemQuantity(product, amount);
+      return ServiceOrderMapper.toDto(so);
+   }
+
+   @Transactional
+   public ServiceOrderResponseDto decreaseItemQuantity(Long serviceOrderId, Long productId, int amount) {
+      ServiceOrder so = serviceOrderRepository.findById(serviceOrderId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      Product product = productRepository.findById(productId)
+              .orElseThrow(() -> new ResourceNotFoundException());
+
+      so.decreaseItemQuantity(product, amount);
+      return ServiceOrderMapper.toDto(so);
+   }
+
+
+   @Transactional
    public void deleteServiceOrder(Long id) {
       if (!serviceOrderRepository.existsById(id)) {
          throw new ResourceNotFoundException();
