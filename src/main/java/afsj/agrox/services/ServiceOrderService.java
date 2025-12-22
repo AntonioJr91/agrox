@@ -61,7 +61,6 @@ public class ServiceOrderService {
       ServiceOrder saved = serviceOrderRepository.save(so);
 
       return ServiceOrderMapper.toDto(saved);
-
    }
 
    @Transactional
@@ -93,6 +92,12 @@ public class ServiceOrderService {
       ServiceOrder so = serviceOrderRepository.findById(serviceOrderId)
               .orElseThrow(() -> new ResourceNotFoundException());
       so.finish();
+
+      for(var item: so.getServiceOrderItems()){
+         Product product = item.getProduct();
+         product.decreaseStock(item.getQuantity());
+      }
+
       return ServiceOrderMapper.toDto(so);
    }
 
