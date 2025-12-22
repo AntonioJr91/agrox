@@ -4,6 +4,20 @@
 -- =====================================================
 
 -- =========================
+-- ROLES
+-- =========================
+INSERT INTO roles (name)
+VALUES ('ROLE_ADMIN'),
+       ('ROLE_USER');
+
+-- =========================
+-- ADMIN USER
+-- =========================
+INSERT INTO users (username, password)
+VALUES ('admin',
+        '$2y$10$Hw3HrMy.v.ldyMXWac8Ak.7RGSS2LlMcPaaaiIBDLofhvR1e0AHcm');
+
+-- =========================
 -- CATEGORY
 -- =========================
 INSERT INTO category (name)
