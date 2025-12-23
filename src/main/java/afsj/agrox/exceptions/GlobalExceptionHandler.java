@@ -4,14 +4,9 @@ import afsj.agrox.dtos.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-//import org.springframework.SecurityConfig.core.AuthenticationException;
-//import org.springframework.SecurityConfig.access.AccessDeniedException;
-
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -71,30 +66,6 @@ public class GlobalExceptionHandler {
       );
    }
 
-   @ExceptionHandler(AuthenticationException.class)
-   public ResponseEntity<ErrorResponseDto> handleAuthentication(
-           AuthenticationException ex,
-           HttpServletRequest req) {
-
-      return buildError(
-              HttpStatus.UNAUTHORIZED,
-              "Unauthenticated user",
-              req.getRequestURI()
-      );
-   }
-
-   @ExceptionHandler(AccessDeniedException.class)
-   public ResponseEntity<ErrorResponseDto> handleAccessDenied(
-           AccessDeniedException ex,
-           HttpServletRequest req) {
-
-      return buildError(
-              HttpStatus.FORBIDDEN,
-              "Access denied",
-              req.getRequestURI()
-      );
-   }
-
    @ExceptionHandler(Exception.class)
    public ResponseEntity<ErrorResponseDto> handleGenericException(
            Exception ex,
@@ -106,7 +77,6 @@ public class GlobalExceptionHandler {
               req.getRequestURI()
       );
    }
-
 
    private ResponseEntity<ErrorResponseDto> buildError(HttpStatus status, String message, String path) {
       ErrorResponseDto error = new ErrorResponseDto();

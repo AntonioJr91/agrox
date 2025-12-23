@@ -1,21 +1,6 @@
 -- =====================================================
--- DATA.SQL - Dados de teste
--- Compatível com o mapeamento atual
+-- DATA.SQL - DATA TEST
 -- =====================================================
-
--- =========================
--- ROLES
--- =========================
-INSERT INTO roles (name)
-VALUES ('ROLE_ADMIN'),
-       ('ROLE_USER');
-
--- =========================
--- ADMIN USER
--- =========================
-INSERT INTO users (username, password)
-VALUES ('admin',
-        '$2y$10$Hw3HrMy.v.ldyMXWac8Ak.7RGSS2LlMcPaaaiIBDLofhvR1e0AHcm');
 
 -- =========================
 -- CATEGORY
@@ -69,8 +54,7 @@ INSERT INTO service_order_item (service_order_id,
 VALUES (1, 1, 20), -- Ureia na ordem 1
        (1, 2, 10), -- Semente na ordem 1
        (2, 3, 5);
--- Defensivo na ordem 2
 
 -- =====================================================
--- FIM DO DATA.SQL
+-- END DATA.SQL
 -- =====================================================
