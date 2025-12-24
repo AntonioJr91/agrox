@@ -7,6 +7,8 @@ import afsj.agrox.entities.Employee;
 import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.EmployeeMapper;
 import afsj.agrox.repositories.EmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,8 @@ public class EmployeeService {
    }
 
    @Transactional(readOnly = true)
-   public List<EmployeeResponseDto> findAllEmployees() {
-      return EmployeeMapper.toDtoList(employeeRepository.findAll());
+   public Page<EmployeeResponseDto> findAllEmployees(Pageable pageable) {
+      return employeeRepository.findAll(pageable).map(emp -> EmployeeMapper.toDto(emp));
    }
 
    @Transactional(readOnly = true)

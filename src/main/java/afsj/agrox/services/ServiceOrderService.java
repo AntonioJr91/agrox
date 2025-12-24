@@ -11,6 +11,8 @@ import afsj.agrox.mapper.ServiceOrderMapper;
 import afsj.agrox.repositories.EmployeeRepository;
 import afsj.agrox.repositories.ProductRepository;
 import afsj.agrox.repositories.ServiceOrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +33,8 @@ public class ServiceOrderService {
    }
 
    @Transactional(readOnly = true)
-   public List<ServiceOrderResponseDto> findAllOrders() {
-      return ServiceOrderMapper.toDtoList(serviceOrderRepository.findAll());
+   public Page<ServiceOrderResponseDto> findAllOrders(Pageable pageable) {
+      return serviceOrderRepository.findAll(pageable).map(so -> ServiceOrderMapper.toDto(so));
    }
 
    @Transactional(readOnly = true)
@@ -93,7 +95,7 @@ public class ServiceOrderService {
               .orElseThrow(() -> new ResourceNotFoundException());
       so.finish();
 
-      for(var item: so.getServiceOrderItems()){
+      for (var item : so.getServiceOrderItems()) {
          Product product = item.getProduct();
          product.decreaseStock(item.getQuantity());
       }

@@ -9,6 +9,8 @@ import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.ProductMapper;
 import afsj.agrox.repositories.CategoryRepository;
 import afsj.agrox.repositories.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +28,8 @@ public class ProductService {
    }
 
    @Transactional(readOnly = true)
-   public List<ProductResponseDto> findAllProducts() {
-      return ProductMapper.toDtoList(productRepository.findAll());
+   public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
+      return productRepository.findAll(pageable).map(product -> ProductMapper.toDto(product));
    }
 
    @Transactional(readOnly = true)

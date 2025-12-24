@@ -5,6 +5,8 @@ import afsj.agrox.dtos.EmployeeResponseDto;
 import afsj.agrox.dtos.EmployeeUpdateDto;
 import afsj.agrox.services.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,8 +25,8 @@ public class EmployeeController {
    }
 
    @GetMapping
-   public ResponseEntity<List<EmployeeResponseDto>> getAll() {
-      return ResponseEntity.ok(employeeService.findAllEmployees());
+   public ResponseEntity<Page<EmployeeResponseDto>> getAll(Pageable pageable) {
+      return ResponseEntity.ok(employeeService.findAllEmployees(pageable));
    }
 
    @GetMapping(value = "/{id}")

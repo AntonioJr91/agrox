@@ -6,6 +6,8 @@ import afsj.agrox.dtos.ProductUpdateDto;
 import afsj.agrox.dtos.StockAmountDto;
 import afsj.agrox.services.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,8 +26,8 @@ public class ProductController {
    }
 
    @GetMapping
-   public ResponseEntity<List<ProductResponseDto>> findAll() {
-      return ResponseEntity.ok().body(productService.findAllProducts());
+   public ResponseEntity<Page<ProductResponseDto>> findAll(Pageable pageable) {
+      return ResponseEntity.ok().body(productService.findAllProducts(pageable));
    }
 
    @GetMapping(value = "/{id}")

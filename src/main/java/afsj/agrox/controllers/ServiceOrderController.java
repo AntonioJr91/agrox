@@ -5,6 +5,8 @@ import afsj.agrox.dtos.ServiceOrderItemUpdateQuantityDto;
 import afsj.agrox.dtos.ServiceOrderResponseDto;
 import afsj.agrox.services.ServiceOrderService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,8 +25,8 @@ public class ServiceOrderController {
    }
 
    @GetMapping
-   public ResponseEntity<List<ServiceOrderResponseDto>> getAll() {
-      return ResponseEntity.ok().body(serviceOrderService.findAllOrders());
+   public ResponseEntity<Page<ServiceOrderResponseDto>> getAll(Pageable pageable) {
+      return ResponseEntity.ok().body(serviceOrderService.findAllOrders(pageable));
    }
 
    @GetMapping(value = "/{id}")

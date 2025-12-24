@@ -3,6 +3,8 @@ package afsj.agrox.controllers;
 import afsj.agrox.dtos.CategoryCreateDto;
 import afsj.agrox.dtos.CategoryResponseDto;
 import afsj.agrox.services.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,8 +23,8 @@ public class CategoryController {
    }
 
    @GetMapping
-   public ResponseEntity<List<CategoryResponseDto>> getAll() {
-      List<CategoryResponseDto> categories = categoryService.findAllCategories();
+   public ResponseEntity<Page<CategoryResponseDto>> getAll(Pageable pageable) {
+      Page<CategoryResponseDto> categories = categoryService.findAllCategories(pageable);
       return ResponseEntity.ok(categories);
    }
 

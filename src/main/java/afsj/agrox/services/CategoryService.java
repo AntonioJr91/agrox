@@ -6,6 +6,8 @@ import afsj.agrox.entities.Category;
 import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.CategoryMapper;
 import afsj.agrox.repositories.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,8 @@ public class CategoryService {
    }
 
    @Transactional(readOnly = true)
-   public List<CategoryResponseDto> findAllCategories() {
-      return CategoryMapper.toDtoList(categoryRepository.findAll());
+   public Page<CategoryResponseDto> findAllCategories(Pageable pageable) {
+      return categoryRepository.findAll(pageable).map(cat -> CategoryMapper.toDto(cat));
    }
 
    @Transactional(readOnly = true)
