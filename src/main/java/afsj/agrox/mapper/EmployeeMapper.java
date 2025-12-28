@@ -10,12 +10,12 @@ public class EmployeeMapper {
 
    public static Employee toEntity(EmployeeCreateDto dto) {
       return new Employee(
-              dto.getName(),
-              dto.getCpf(),
-              dto.getPhoneNumber(),
-              dto.getDateOfBirth(),
-              dto.getContractType(),
-              dto.getAdmissionDate()
+              dto.name(),
+              dto.cpf(),
+              dto.phoneNumber(),
+              dto.dateOfBirth(),
+              dto.contractType(),
+              dto.admissionDate()
       );
    }
 

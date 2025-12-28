@@ -37,7 +37,7 @@ public class EmployeeController {
    @PostMapping
    public ResponseEntity<EmployeeResponseDto> create(@RequestBody @Valid EmployeeCreateDto dto) {
       EmployeeResponseDto emp = employeeService.createEmployee(dto);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(emp.getId()).toUri();
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(emp.id()).toUri();
       return ResponseEntity.created(uri).body(emp);
    }
 

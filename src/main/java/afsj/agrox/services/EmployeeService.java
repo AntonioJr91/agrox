@@ -36,7 +36,7 @@ public class EmployeeService {
 
    @Transactional
    public EmployeeResponseDto createEmployee(EmployeeCreateDto dto) {
-      Employee emp = employeeRepository.findByCpf(dto.getCpf());
+      Employee emp = employeeRepository.findByCpf(dto.cpf());
 
       if (emp != null) {
          throw new IllegalArgumentException();
@@ -54,8 +54,8 @@ public class EmployeeService {
       Employee employee = employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
       employee.updateDetails(
-              dto.getPhoneNumber(),
-              dto.getContractType()
+              dto.phoneNumber(),
+              dto.contractType()
       );
 
       return EmployeeMapper.toDto(employee);
