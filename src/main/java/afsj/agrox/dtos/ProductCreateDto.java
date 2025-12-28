@@ -6,45 +6,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class ProductCreateDto {
+public record ProductCreateDto(
+        @NotBlank
+        @Size(min = 3, max = 50)
+        String name,
 
-   @NotBlank
-   @Size(min = 3, max = 50)
-   private String name;
+        @NotNull
+        UnitOfMeasure unitOfMeasure,
 
-   @NotNull
-   private UnitOfMeasure unitOfMeasure;
+        @NotNull
+        Long categoryId,
 
-   @NotNull
-   private Long categoryId;
-
-   @NotNull
-   @Min(1)
-   private int stockQuantity;
-
-   public ProductCreateDto() {
-   }
-
-   public ProductCreateDto(String name, UnitOfMeasure unitOfMeasure, Long categoryId, int stockQuantity) {
-      this.name = name;
-      this.unitOfMeasure = unitOfMeasure;
-      this.categoryId = categoryId;
-      this.stockQuantity = stockQuantity;
-   }
-
-   public String getName() {
-      return name;
-   }
-
-   public UnitOfMeasure getUnitOfMeasure() {
-      return unitOfMeasure;
-   }
-
-   public Long getCategoryId() {
-      return categoryId;
-   }
-
-   public int getStockQuantity() {
-      return stockQuantity;
-   }
+        @NotNull
+        @Min(1)
+        int stockQuantity
+) {
 }
+
+
