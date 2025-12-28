@@ -79,12 +79,14 @@ public class GlobalExceptionHandler {
    }
 
    private ResponseEntity<ErrorResponseDto> buildError(HttpStatus status, String message, String path) {
-      ErrorResponseDto error = new ErrorResponseDto();
-      error.setTimestamp(Instant.now());
-      error.setStatus(status.value());
-      error.setError(status.getReasonPhrase());
-      error.setMessage(message);
-      error.setPath(path);
+      ErrorResponseDto error = new ErrorResponseDto(
+              Instant.now(),
+              status.value(),
+              status.getReasonPhrase(),
+              message,
+              path
+      );
+
 
       return ResponseEntity.status(status).body(error);
    }
