@@ -37,7 +37,7 @@ public class ServiceOrderController {
    @PostMapping
    public ResponseEntity<ServiceOrderResponseDto> create(@RequestBody @Valid ServiceOrderCreateDto dto) {
       ServiceOrderResponseDto so = serviceOrderService.createServiceOrder(dto);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(so.getId()).toUri();
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(so.id()).toUri();
       return ResponseEntity.created(uri).body(so);
    }
 
@@ -46,7 +46,7 @@ public class ServiceOrderController {
                                                                        @PathVariable Long productId,
                                                                        @RequestBody @Valid ServiceOrderItemUpdateQuantityDto dto){
 
-      ServiceOrderResponseDto response = serviceOrderService.increaseItemQuantity(orderId, productId, dto.getAmount());
+      ServiceOrderResponseDto response = serviceOrderService.increaseItemQuantity(orderId, productId, dto.amount());
       return ResponseEntity.ok().body(response);
    }
 
@@ -55,7 +55,7 @@ public class ServiceOrderController {
                                                                        @PathVariable Long productId,
                                                                        @RequestBody ServiceOrderItemUpdateQuantityDto dto){
 
-      ServiceOrderResponseDto response = serviceOrderService.decreaseItemQuantity(orderId, productId, dto.getAmount());
+      ServiceOrderResponseDto response = serviceOrderService.decreaseItemQuantity(orderId, productId, dto.amount());
       return ResponseEntity.ok().body(response);
    }
 

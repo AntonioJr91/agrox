@@ -46,17 +46,17 @@ public class ServiceOrderService {
 
    @Transactional
    public ServiceOrderResponseDto createServiceOrder(ServiceOrderCreateDto dto) {
-      Employee emp = employeeRepository.findById(dto.getEmployeeId())
+      Employee emp = employeeRepository.findById(dto.employeeId())
               .orElseThrow(ResourceNotFoundException::new);
 
       ServiceOrder so = ServiceOrderMapper.toEntity(dto, emp);
 
-      var items = dto.getItems();
+      var items = dto.items();
       if (items != null && !items.isEmpty()) {
-         for (ServiceOrderItemCreateDto itemDto : dto.getItems()) {
-            Product product = productRepository.findById(itemDto.getProductId())
+         for (ServiceOrderItemCreateDto itemDto : dto.items()) {
+            Product product = productRepository.findById(itemDto.productId())
                     .orElseThrow(ResourceNotFoundException::new);
-            so.addItem(product, itemDto.getQuantity());
+            so.addItem(product, itemDto.quantity());
          }
       }
 

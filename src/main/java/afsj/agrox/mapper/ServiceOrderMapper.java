@@ -11,7 +11,7 @@ import java.util.List;
 public class ServiceOrderMapper {
 
    public static ServiceOrder toEntity(ServiceOrderCreateDto dto, Employee emp) {
-      return new ServiceOrder(dto.getDescription(), emp);
+      return new ServiceOrder(dto.description(), emp);
    }
 
    public static ServiceOrderResponseDto toDto(ServiceOrder serviceOrder) {

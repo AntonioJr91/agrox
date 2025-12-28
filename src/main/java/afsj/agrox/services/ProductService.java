@@ -40,7 +40,7 @@ public class ProductService {
 
    @Transactional
    public ProductResponseDto createProduct(ProductCreateDto dto) {
-      Category category = categoryRepository.findById(dto.getCategoryId())
+      Category category = categoryRepository.findById(dto.categoryId())
               .orElseThrow(() -> new ResourceNotFoundException());
       Product product = ProductMapper.toEntity(dto, category);
 
@@ -53,12 +53,12 @@ public class ProductService {
       Product product = productRepository.findById(id)
               .orElseThrow(() -> new ResourceNotFoundException());
 
-      Category category = categoryRepository.findById(dto.getCategoryId())
+      Category category = categoryRepository.findById(dto.categoryId())
               .orElseThrow(() -> new ResourceNotFoundException());
 
       product.updateDetails(
-              dto.getName(),
-              dto.getUnitOfMeasure(),
+              dto.name(),
+              dto.unitOfMeasure(),
               category
       );
       return ProductMapper.toDto(product);

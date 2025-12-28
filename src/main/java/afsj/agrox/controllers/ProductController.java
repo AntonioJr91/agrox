@@ -38,7 +38,7 @@ public class ProductController {
    @PostMapping
    public ResponseEntity<ProductResponseDto> create(@RequestBody @Valid ProductCreateDto dto) {
       ProductResponseDto product = productService.createProduct(dto);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.id()).toUri();
       return ResponseEntity.created(uri).body(product);
    }
 
@@ -49,12 +49,12 @@ public class ProductController {
 
    @PatchMapping(value = "/{id}/stock/increase")
    public ResponseEntity<ProductResponseDto> increaseStock(@PathVariable Long id, @RequestBody @Valid StockAmountDto dto){
-      return ResponseEntity.ok().body(productService.increaseProductAmount(id, dto.getAmount()));
+      return ResponseEntity.ok().body(productService.increaseProductAmount(id, dto.amount()));
    }
 
    @PatchMapping(value = "/{id}/stock/decrease")
    public ResponseEntity<ProductResponseDto> decreaseStock(@PathVariable Long id, @RequestBody @Valid StockAmountDto dto){
-      return ResponseEntity.ok().body(productService.decreaseProductAmount(id, dto.getAmount()));
+      return ResponseEntity.ok().body(productService.decreaseProductAmount(id, dto.amount()));
    }
 
    @DeleteMapping(value = "/{id}")

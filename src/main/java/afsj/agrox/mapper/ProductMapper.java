@@ -12,10 +12,10 @@ public class ProductMapper {
 
    public static Product toEntity(ProductCreateDto dto, Category category) {
       return new Product(
-              dto.getName(),
-              dto.getUnitOfMeasure(),
+              dto.name(),
+              dto.unitOfMeasure(),
               category,
-              dto.getStockQuantity()
+              dto.stockQuantity()
       );
    }
 
