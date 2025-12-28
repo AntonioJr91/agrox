@@ -66,6 +66,18 @@ public class GlobalExceptionHandler {
       );
    }
 
+   @ExceptionHandler(DomainException.class)
+   public ResponseEntity<ErrorResponseDto> handleDomain(
+           DomainException ex,
+           HttpServletRequest req) {
+
+      return buildError(
+              HttpStatus.UNPROCESSABLE_ENTITY,
+              ex.getMessage(),
+              req.getRequestURI()
+      );
+   }
+
    @ExceptionHandler(Exception.class)
    public ResponseEntity<ErrorResponseDto> handleGenericException(
            Exception ex,
