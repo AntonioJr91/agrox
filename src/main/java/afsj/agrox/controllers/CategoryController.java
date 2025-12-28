@@ -1,7 +1,7 @@
 package afsj.agrox.controllers;
 
-import afsj.agrox.dtos.CategoryCreateDto;
-import afsj.agrox.dtos.CategoryResponseDto;
+import afsj.agrox.dtos.CategoryCreateDTO;
+import afsj.agrox.dtos.CategoryResponseDTO;
 import afsj.agrox.services.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -23,21 +22,21 @@ public class CategoryController {
    }
 
    @GetMapping
-   public ResponseEntity<Page<CategoryResponseDto>> getAll(Pageable pageable) {
-      Page<CategoryResponseDto> categories = categoryService.findAllCategories(pageable);
+   public ResponseEntity<Page<CategoryResponseDTO>> getAll(Pageable pageable) {
+      Page<CategoryResponseDTO> categories = categoryService.findAllCategories(pageable);
       return ResponseEntity.ok(categories);
    }
 
    @GetMapping(value = "/{id}")
-   public ResponseEntity<CategoryResponseDto> getById(@PathVariable Long id) {
-      CategoryResponseDto category = categoryService.findCategoryById(id);
+   public ResponseEntity<CategoryResponseDTO> getById(@PathVariable Long id) {
+      CategoryResponseDTO category = categoryService.findCategoryById(id);
       return ResponseEntity.ok(category);
    }
 
    @PostMapping
-   public ResponseEntity<CategoryResponseDto> create(@RequestBody CategoryCreateDto dto){
-      CategoryResponseDto category = categoryService.createCategory(dto);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
+   public ResponseEntity<CategoryResponseDTO> create(@RequestBody CategoryCreateDTO dto){
+      CategoryResponseDTO category = categoryService.createCategory(dto);
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.id()).toUri();
       return ResponseEntity.created(uri).body(category);
    }
 

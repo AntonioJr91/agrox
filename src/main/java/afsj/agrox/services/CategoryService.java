@@ -1,7 +1,7 @@
 package afsj.agrox.services;
 
-import afsj.agrox.dtos.CategoryCreateDto;
-import afsj.agrox.dtos.CategoryResponseDto;
+import afsj.agrox.dtos.CategoryCreateDTO;
+import afsj.agrox.dtos.CategoryResponseDTO;
 import afsj.agrox.entities.Category;
 import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.CategoryMapper;
@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class CategoryService {
@@ -23,18 +21,18 @@ public class CategoryService {
    }
 
    @Transactional(readOnly = true)
-   public Page<CategoryResponseDto> findAllCategories(Pageable pageable) {
+   public Page<CategoryResponseDTO> findAllCategories(Pageable pageable) {
       return categoryRepository.findAll(pageable).map(cat -> CategoryMapper.toDto(cat));
    }
 
    @Transactional(readOnly = true)
-   public CategoryResponseDto findCategoryById(Long id) {
+   public CategoryResponseDTO findCategoryById(Long id) {
       Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
       return CategoryMapper.toDto(category);
    }
 
    @Transactional
-   public CategoryResponseDto createCategory(CategoryCreateDto dto) {
+   public CategoryResponseDTO createCategory(CategoryCreateDTO dto) {
       Category category = CategoryMapper.toEntity(dto);
       Category saved = categoryRepository.save(category);
       return CategoryMapper.toDto(saved);

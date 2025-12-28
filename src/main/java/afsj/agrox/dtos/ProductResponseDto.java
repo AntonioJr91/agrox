@@ -6,14 +6,14 @@ public class ProductResponseDto {
    private Long id;
    private String name;
    private UnitOfMeasure unitOfMeasure;
-   private CategoryResponseDto categoryDto;
+   private CategoryResponseDTO categoryDto;
    private int stockQuantity;
 
    public ProductResponseDto() {
    }
 
    public ProductResponseDto(Long id, String name, UnitOfMeasure unitOfMeasure,
-                             CategoryResponseDto categoryDto, int stockQuantity) {
+                             CategoryResponseDTO categoryDto, int stockQuantity) {
       this.id = id;
       this.name = name;
       this.unitOfMeasure = unitOfMeasure;
@@ -33,7 +33,7 @@ public class ProductResponseDto {
       return unitOfMeasure;
    }
 
-   public CategoryResponseDto getCategory() {
+   public CategoryResponseDTO getCategory() {
       return categoryDto;
    }
 

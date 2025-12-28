@@ -1,22 +1,22 @@
 package afsj.agrox.mapper;
 
-import afsj.agrox.dtos.CategoryCreateDto;
-import afsj.agrox.dtos.CategoryResponseDto;
+import afsj.agrox.dtos.CategoryCreateDTO;
+import afsj.agrox.dtos.CategoryResponseDTO;
 import afsj.agrox.entities.Category;
 
 import java.util.List;
 
 public class CategoryMapper {
 
-   public static Category toEntity(CategoryCreateDto dto) {
-      return new Category(dto.getName());
+   public static Category toEntity(CategoryCreateDTO dto) {
+      return new Category(dto.name());
    }
 
-   public static CategoryResponseDto toDto(Category category) {
-      return new CategoryResponseDto(category.getId(), category.getName());
+   public static CategoryResponseDTO toDto(Category category) {
+      return new CategoryResponseDTO(category.getId(), category.getName());
    }
 
-   public static List<CategoryResponseDto> toDtoList(List<Category> categories) {
+   public static List<CategoryResponseDTO> toDtoList(List<Category> categories) {
       return categories.stream().map(category -> CategoryMapper.toDto(category)).toList();
    }
 

@@ -1,6 +1,6 @@
 package afsj.agrox.mapper;
 
-import afsj.agrox.dtos.CategoryResponseDto;
+import afsj.agrox.dtos.CategoryResponseDTO;
 import afsj.agrox.dtos.ProductCreateDto;
 import afsj.agrox.dtos.ProductResponseDto;
 import afsj.agrox.entities.Category;
@@ -24,7 +24,7 @@ public class ProductMapper {
               product.getId(),
               product.getName(),
               product.getUnitOfMeasure(),
-              new CategoryResponseDto(
+              new CategoryResponseDTO(
                       product.getCategory().getId(),
                       product.getCategory().getName()),
               product.getStockQuantity()
@@ -38,7 +38,7 @@ public class ProductMapper {
                       product.getId(),
                       product.getName(),
                       product.getUnitOfMeasure(),
-                      new CategoryResponseDto(
+                      new CategoryResponseDTO(
                               product.getCategory().getId(),
                               product.getCategory().getName()),
                       product.getStockQuantity()
