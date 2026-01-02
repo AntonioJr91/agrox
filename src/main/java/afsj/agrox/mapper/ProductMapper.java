@@ -15,7 +15,7 @@ public class ProductMapper {
               dto.name(),
               dto.unitOfMeasure(),
               category,
-              dto.stockQuantity()
+              dto.initialStockQuantity()
       );
    }
 

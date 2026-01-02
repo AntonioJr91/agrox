@@ -1,9 +1,11 @@
 package afsj.agrox.services;
 
 import afsj.agrox.dtos.EmployeeCreateDto;
+import afsj.agrox.dtos.EmployeeDismissalDateDTO;
 import afsj.agrox.dtos.EmployeeResponseDto;
 import afsj.agrox.dtos.EmployeeUpdateDto;
 import afsj.agrox.entities.Employee;
+import afsj.agrox.exceptions.DuplicateCpfException;
 import afsj.agrox.exceptions.ResourceNotFoundException;
 import afsj.agrox.mapper.EmployeeMapper;
 import afsj.agrox.repositories.EmployeeRepository;
@@ -12,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public class EmployeeService {
@@ -39,7 +41,7 @@ public class EmployeeService {
       Employee emp = employeeRepository.findByCpf(dto.cpf());
 
       if (emp != null) {
-         throw new IllegalArgumentException();
+         throw new DuplicateCpfException();
       }
 
       Employee newEmployee = EmployeeMapper.toEntity(dto);
@@ -58,6 +60,13 @@ public class EmployeeService {
               dto.contractType()
       );
 
+      return EmployeeMapper.toDto(employee);
+   }
+
+   @Transactional
+   public EmployeeResponseDto dismissEmployee(Long id, EmployeeDismissalDateDTO dto) {
+      Employee employee = employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+      employee.dismiss(dto.dismissalDate());
       return EmployeeMapper.toDto(employee);
    }
 

@@ -1,6 +1,7 @@
 package afsj.agrox.controllers;
 
 import afsj.agrox.dtos.EmployeeCreateDto;
+import afsj.agrox.dtos.EmployeeDismissalDateDTO;
 import afsj.agrox.dtos.EmployeeResponseDto;
 import afsj.agrox.dtos.EmployeeUpdateDto;
 import afsj.agrox.services.EmployeeService;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -45,6 +45,11 @@ public class EmployeeController {
    @PatchMapping(value = "/{id}")
    public ResponseEntity<EmployeeResponseDto> update(@PathVariable Long id, @RequestBody @Valid EmployeeUpdateDto dto) {
       return ResponseEntity.ok(employeeService.updateEmployeeDetails(id, dto));
+   }
+
+   @PatchMapping(value = "/{id}/dismiss")
+   public ResponseEntity<EmployeeResponseDto> dismiss(@PathVariable Long id, @RequestBody EmployeeDismissalDateDTO dto) {
+      return ResponseEntity.ok(employeeService.dismissEmployee(id, dto));
    }
 
    @DeleteMapping(value = "/{id}")

@@ -77,6 +77,17 @@ public class GlobalExceptionHandler {
               req.getRequestURI()
       );
    }
+   @ExceptionHandler(DuplicateCpfException.class)
+   public ResponseEntity<ErrorResponseDto> handleDuplicateCpf(
+           DuplicateCpfException ex,
+           HttpServletRequest req) {
+
+      return buildError(
+              HttpStatus.CONFLICT,
+              ex.getMessage(),
+              req.getRequestURI()
+      );
+   }
 
    @ExceptionHandler(Exception.class)
    public ResponseEntity<ErrorResponseDto> handleGenericException(

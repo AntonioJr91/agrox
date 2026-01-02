@@ -18,8 +18,8 @@ public record ProductCreateDto(
         Long categoryId,
 
         @NotNull
-        @Min(1)
-        int stockQuantity
+        @Min(0)
+        int initialStockQuantity
 ) {
 }
 

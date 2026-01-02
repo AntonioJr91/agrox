@@ -26,7 +26,7 @@ public class ServiceOrder {
    @Column(nullable = false, updatable = false)
    private LocalDate createdAt;
 
-   @Column(updatable = false)
+   @Column()
    private LocalDate finishedAt;
 
    @Enumerated(EnumType.STRING)
